@@ -1,20 +1,25 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { passportField } from './passportField';
 
-@Controller()
+@ApiTags('Auth')
+@Controller('login')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiResponse({
+    schema: { properties: { access_token: { type: 'string' } } },
+  })
+  @ApiBody({ description: 'Authneticate credetials', type: CreateUserDto })
   @UseGuards(AuthGuard('local'))
-  @Post('login')
+  @Post()
   async login(
-    @Body(passportField.usernameField)
-    @Body(passportField.passwordField)
     @Request()
     req: any,
   ) {
-    return this.authService.loginWithCredentials(req);
+    return this.authService.loginWithCredentials({ id: req.user.id });
   }
 }
