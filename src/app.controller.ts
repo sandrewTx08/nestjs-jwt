@@ -1,7 +1,6 @@
-import { Controller, Get, Header, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
-  ApiHeader,
   ApiProduces,
   ApiResponse,
   ApiTags,
